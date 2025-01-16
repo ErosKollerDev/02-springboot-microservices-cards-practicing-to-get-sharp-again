@@ -11,6 +11,10 @@ public class CardMapper {
                 .cardNumber(card.getCardNumber())
                 .cardStatus(card.getCardStatus())
                 .cardType(card.getCardType())
+                .totalLimit(card.getTotalLimit())
+                .amountUsed(card.getAmountUsed())
+                .availableAmount(card.getAvailableAmount())
+                .mobileNumber(card.getMobileNumber())
                 .build();
     }
 
@@ -18,6 +22,10 @@ public class CardMapper {
         card.setCardNumber(cardDto.getCardNumber());
         card.setCardStatus(cardDto.getCardStatus());
         card.setCardType(cardDto.getCardType());
+        card.setTotalLimit(cardDto.getTotalLimit());
+        card.setAmountUsed(cardDto.getAmountUsed());
+        card.setAvailableAmount(cardDto.getAvailableAmount());
+        card.setMobileNumber(cardDto.getMobileNumber());
         return card;
     }
 

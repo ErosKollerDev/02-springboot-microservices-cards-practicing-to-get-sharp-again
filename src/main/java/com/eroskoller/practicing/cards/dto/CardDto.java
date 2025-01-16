@@ -15,5 +15,9 @@ public class CardDto {
     private String cardNumber;
     private String cardType;
     private String cardStatus;
+    private String mobileNumber;
+    private Integer totalLimit;
+    private Integer amountUsed;
+    private Integer availableAmount;
 
 }
