@@ -1,6 +1,7 @@
 package com.eroskoller.practicing.cards.service;
 
 
+import com.eroskoller.practicing.cards.constants.CardsConstants;
 import com.eroskoller.practicing.cards.dto.CardDto;
 import com.eroskoller.practicing.cards.entity.CardEntity;
 import com.eroskoller.practicing.cards.exception.CardAlreadyExistsException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -24,15 +26,34 @@ public class CardService {
     private final CardRepository cardRepository;
 
 
-    public void saveCard(@Valid CardDto cardDto) {
-        boolean exists = existsCard(cardDto.getCardNumber());
-        if (exists) {
-            throw new CardAlreadyExistsException("Card already exists");
+    public void createCard(String mobileNumber) {
+        Optional<CardEntity> optionalCards= cardRepository.findByMobileNumber(mobileNumber);
+        if(optionalCards.isPresent()){
+            throw new CardAlreadyExistsException("Card already registered with given mobileNumber "+mobileNumber);
         }
-        CardEntity cardEntity = CardMapper.mapToCardEntity(cardDto, new CardEntity());
-        this.cardRepository.save(cardEntity);
+        cardRepository.save(createNewCard(mobileNumber));
     }
 
+    public Optional<CardEntity> findByMobileNumber(String mobileNumber) {
+        return cardRepository.findByMobileNumber(mobileNumber);
+    }
+
+    /**
+     * @param mobileNumber - Mobile Number of the Customer
+     * @return the new card details
+     */
+    private CardEntity createNewCard(String mobileNumber) {
+        CardEntity newCard = new CardEntity();
+        long randomCardNumber = 100000000000L + new Random().nextInt(900000000);
+        newCard.setCardNumber(Long.toString(randomCardNumber));
+        newCard.setMobileNumber(mobileNumber);
+        newCard.setCardType(CardsConstants.CREDIT_CARD);
+        newCard.setTotalLimit(CardsConstants.NEW_CARD_LIMIT);
+        newCard.setAmountUsed(0);
+        newCard.setCardStatus("ACTIVE");
+        newCard.setAvailableAmount(CardsConstants.NEW_CARD_LIMIT);
+        return newCard;
+    }
 
     public boolean existsCard(String cardNumber) {
         Optional<CardEntity> byCardNumber = this.cardRepository.findByCardNumber(cardNumber);
@@ -52,9 +73,9 @@ public class CardService {
         return isUpdated;
     }
 
-    public CardDto getCard(String cardNumber) {
+    public CardDto getCard(String mobileNumber) {
 
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByCardNumber(cardNumber);
+        Optional<CardEntity> byCardNumber = this.cardRepository.findByMobileNumber(mobileNumber);
         if (byCardNumber.isPresent()) {
             return CardMapper.mapToCardDto(byCardNumber.get(), new CardDto());
         } else {
@@ -63,8 +84,8 @@ public class CardService {
 
     }
 
-    public boolean deleteCard(String cardNumber) {
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByCardNumber(cardNumber);
+    public boolean deleteCard(String mobileNumber) {
+        Optional<CardEntity> byCardNumber = this.cardRepository.findByMobileNumber(mobileNumber);
         if (byCardNumber.isPresent()) {
             this.cardRepository.deleteById(byCardNumber.get().getCardId());
             return true;

@@ -14,7 +14,7 @@ public class CardEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
     private Long cardId;
-    @Column(name = "mobile_number")
+    @Column(name = "mobile_number", unique = true)
     private String mobileNumber;
     @Column(name = "card_number", unique = true)
     private String cardNumber;
