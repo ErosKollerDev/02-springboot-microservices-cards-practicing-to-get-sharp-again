@@ -40,11 +40,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleCardAlreadyExistsException(Exception ex, WebRequest request) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 request.getDescription(false),
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage(),
                 LocalDateTime.now());
         ex.printStackTrace();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDto);
+    }
+
+    @ExceptionHandler(CardNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleCardNotFoundException(Exception ex, WebRequest request) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                request.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                ex.getMessage(),
+                LocalDateTime.now());
+        ex.printStackTrace();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponseDto);
     }
 
 

@@ -27,9 +27,9 @@ public class CardService {
 
 
     public void createCard(String mobileNumber) {
-        Optional<CardEntity> optionalCards= cardRepository.findByMobileNumber(mobileNumber);
-        if(optionalCards.isPresent()){
-            throw new CardAlreadyExistsException("Card already registered with given mobileNumber "+mobileNumber);
+        Optional<CardEntity> optionalCards = cardRepository.findByMobileNumber(mobileNumber);
+        if (optionalCards.isPresent()) {
+            throw new CardAlreadyExistsException("Card already registered with given mobileNumber " + mobileNumber);
         }
         cardRepository.save(createNewCard(mobileNumber));
     }
@@ -55,42 +55,22 @@ public class CardService {
         return newCard;
     }
 
-    public boolean existsCard(String cardNumber) {
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByCardNumber(cardNumber);
-        return byCardNumber.isPresent();
-    }
 
     public boolean updateCard(@Valid CardDto cardDto) {
-        boolean isUpdated = false;
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByCardNumber(cardDto.getCardNumber());
-        if (byCardNumber.isPresent()) {
-            CardEntity cardEntity = CardMapper.mapToCardEntity(cardDto, byCardNumber.get());
-//            cardEntity.setUpdatedBy("eros");
-//            cardEntity.setUpdatedAt(LocalDateTime.now());
-            this.cardRepository.save(cardEntity);
-            isUpdated = true;
-        }
-        return isUpdated;
+        CardEntity cardFoundEntity = this.cardRepository.findByCardNumber(cardDto.getCardNumber()).orElseThrow(() -> new CardNotFoundException("Card not found"));
+        CardMapper.mapToCardEntity(cardDto, cardFoundEntity);
+        this.cardRepository.save(cardFoundEntity);
+        return true;
     }
 
     public CardDto getCard(String mobileNumber) {
-
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByMobileNumber(mobileNumber);
-        if (byCardNumber.isPresent()) {
-            return CardMapper.mapToCardDto(byCardNumber.get(), new CardDto());
-        } else {
-            throw new CardNotFoundException("Card not found");
-        }
-
+        CardEntity cardFound = this.cardRepository.findByMobileNumber(mobileNumber).orElseThrow(() -> new CardNotFoundException("Card not found"));
+        return CardMapper.mapToCardDto(cardFound, new CardDto());
     }
 
     public boolean deleteCard(String mobileNumber) {
-        Optional<CardEntity> byCardNumber = this.cardRepository.findByMobileNumber(mobileNumber);
-        if (byCardNumber.isPresent()) {
-            this.cardRepository.deleteById(byCardNumber.get().getCardId());
-            return true;
-        } else {
-            return false;
-        }
+        CardEntity cardFound = this.cardRepository.findByMobileNumber(mobileNumber).orElseThrow(() -> new CardNotFoundException("Card not found"));
+        cardRepository.deleteById(cardFound.getCardId());
+        return  true;
     }
 }
