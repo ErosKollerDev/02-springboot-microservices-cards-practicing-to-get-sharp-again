@@ -10,7 +10,8 @@
     </parent>
     <groupId>com.eroskoller.practicing</groupId>
     <artifactId>cards</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>s4</version>
+    <packaging>jar</packaging>
     <name>02-springboot-cards</name>
     <description>MicroServices cards Practicing to see with I&apos;m still sharp</description>
     <url/>
@@ -118,6 +119,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.4</version>
+                <configuration>
+                    <to>
+                        <image>eroskoller/${project.artifactId}:${project.version}</image>
+                    </to>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
