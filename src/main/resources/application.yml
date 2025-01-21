@@ -3,6 +3,12 @@ server:
   port: 9000
 
 spring:
+   config:
+        import:
+            - "application_qa.yml"
+            - "application_prod.yml"
+   profiles:
+        active: "${SPRING_PROFILES_ACTIVE:qa}"
    application:
         name: 02-springboot-cards
    datasource:
@@ -18,3 +24,15 @@ spring:
         hibernate:
             ddl-auto: update
         show-sql: true
+
+build:
+  version: 1.0
+
+cards:
+  message: "Welcome to Cards  Default related local APIs "
+  contactDetails:
+    name: "Dragos Lech - Developer"
+    email: "dragos@eazybank.com"
+  onCallSupport:
+    - (412) 419-3491
+    - (915) 382-1932

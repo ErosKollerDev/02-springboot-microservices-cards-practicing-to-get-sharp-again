@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.eroskoller.practicing</groupId>
     <artifactId>cards</artifactId>
-    <version>s4</version>
+    <version>s6</version>
     <packaging>jar</packaging>
     <name>02-springboot-cards</name>
     <description>MicroServices cards Practicing to see with I&apos;m still sharp</description>
