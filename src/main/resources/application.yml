@@ -6,26 +6,40 @@ spring:
     name: cards
   profiles:
     active: "${SPRING_PROFILES_ACTIVE:qa}"
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password: ''
+#  h2:
+#    console:
+#      enabled: true
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3307/cardsdb?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExists=true
+    username: root
+    password: root
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
+    sql:
+      scripts:
+        create: "classpath:db/schema.sql"
+#    sql:
+#      init:
+#        mode: always
   config:
-    import: "optional:configserver:http://localhost:8071/"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+    import: "${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8071/}"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
 management:
   endpoints:
     web:

@@ -33,6 +33,16 @@ public class CardService {
         }
         cardRepository.save(createNewCard(mobileNumber));
     }
+    public void createCard(CardDto cardDto) {
+//        Optional<CardEntity> optionalCards = cardRepository.findByMobileNumber(mobileNumber);
+        Optional<CardEntity> optionalCards = cardRepository.findByMobileNumber(cardDto.getMobileNumber());
+        if (optionalCards.isPresent()) {
+            throw new CardAlreadyExistsException("Card already registered with given mobileNumber " + cardDto.getMobileNumber());
+        }
+        CardEntity newCard = CardMapper.mapToCardEntity(cardDto, createNewCard(cardDto.getMobileNumber()));
+//        cardRepository.save(createNewCard(mobileNumber));
+        cardRepository.save(newCard);
+    }
 
     public Optional<CardEntity> findByMobileNumber(String mobileNumber) {
         return cardRepository.findByMobileNumber(mobileNumber);

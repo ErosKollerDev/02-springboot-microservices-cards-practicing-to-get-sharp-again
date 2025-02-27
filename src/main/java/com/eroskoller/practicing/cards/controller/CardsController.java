@@ -68,16 +68,13 @@ public class CardsController {
             )
     })
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createCard(@Valid
-                                                  @RequestParam(required = true)
-                                                  @Pattern(regexp = "(^$|[0-9]{9,11})", message = "Mobile number must be between 9 and 11 digits")
-                                                  String mobileNumber) {
+    public ResponseEntity<ResponseDto> createCard(@Valid @RequestBody CardDto cardDto) {
 
-        Optional<CardEntity> byMobileNumber = this.cardService.findByMobileNumber(mobileNumber);
+        Optional<CardEntity> byMobileNumber = this.cardService.findByMobileNumber(cardDto.getMobileNumber());
         if (byMobileNumber.isPresent()) {
-            throw new CardAlreadyExistsException("Card already registered with given mobileNumber " + mobileNumber);
+            throw new CardAlreadyExistsException("Card already registered with given mobileNumber " + cardDto.getMobileNumber());
         }
-        this.cardService.createCard(mobileNumber);
+        this.cardService.createCard(cardDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));

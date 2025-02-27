@@ -10,10 +10,10 @@
     </parent>
     <groupId>com.eroskoller.practicing</groupId>
     <artifactId>cards</artifactId>
-    <version>s6</version>
-    <packaging>jar</packaging>
+    <version>s7</version>
     <name>02-springboot-cards</name>
-    <description>MicroServices cards Practicing to see with I&apos;m still sharp</description>
+    <packaging>jar</packaging>
+    <description>MicroServices Cards Practicing to see with I&apos;m still sharp</description>
     <url/>
     <licenses>
         <license/>
@@ -37,6 +37,11 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
@@ -55,10 +60,15 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.h2database</groupId>-->
+        <!--            <artifactId>h2</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -78,10 +88,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -94,45 +104,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!--	<build>-->
-    <!--		<plugins>-->
-    <!--			<plugin>-->
-    <!--				<groupId>org.apache.maven.plugins</groupId>-->
-    <!--				<artifactId>maven-compiler-plugin</artifactId>-->
-    <!--				<configuration>-->
-    <!--					<annotationProcessorPaths>-->
-    <!--						<path>-->
-    <!--							<groupId>org.projectlombok</groupId>-->
-    <!--							<artifactId>lombok</artifactId>-->
-    <!--						</path>-->
-    <!--					</annotationProcessorPaths>-->
-    <!--				</configuration>-->
-    <!--			</plugin>-->
-    <!--			<plugin>-->
-    <!--				<groupId>org.springframework.boot</groupId>-->
-    <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--				<configuration>-->
-    <!--					<excludes>-->
-    <!--						<exclude>-->
-    <!--							<groupId>org.projectlombok</groupId>-->
-    <!--							<artifactId>lombok</artifactId>-->
-    <!--						</exclude>-->
-    <!--					</excludes>-->
-    <!--				</configuration>-->
-    <!--			</plugin>-->
-    <!--		</plugins>-->
-    <!--	</build>-->
-
-
-    <!--	<build>-->
-    <!--		<plugins>-->
-    <!--			<plugin>-->
-    <!--				<groupId>org.springframework.boot</groupId>-->
-    <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--			</plugin>-->
-    <!--		</plugins>-->
-    <!--	</build>-->
 
     <build>
         <plugins>
@@ -148,19 +119,6 @@
                     <to>
                         <image>eroskoller/${project.artifactId}:${project.version}</image>
                     </to>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
